@@ -9,6 +9,14 @@ import lejos.utility.Delay;
 
 public class Color implements Runnable {
 	
+	//Initializing movement & stoppingfactor for constructor
+	Movement move;
+	StoppingFactor stopper;
+	
+	public Color(Movement m, StoppingFactor s) {
+		move = m;
+		stopper = s;
+	}
 	
 	public void run(){
 		
@@ -37,6 +45,8 @@ public class Color implements Runnable {
 		//end if green
 		System.out.println("Green has been reached, ending colorsensing");
 		colorSensor.close();
+		//When green has been reacher, StoppingFactor's value stop becomes true and should end ultrasonic
+		stopper.stop = true;
 	}
 
 }

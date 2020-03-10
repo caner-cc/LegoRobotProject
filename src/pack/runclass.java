@@ -32,26 +32,29 @@ public class runclass {
 			EV3 ev3 = (EV3) BrickFinder.getLocal();
 			TextLCD lcd = ev3.getTextLCD();
 			Keys keys = ev3.getKeys();
-			Audio audio = ev3.getAudio();			
-			Movement move = new Movement();	
+			Audio audio = ev3.getAudio();
+			
+			//Creating required objects for constructors
+			Movement move = new Movement();
+			StoppingFactor stopper = new StoppingFactor();
+			
+			//Creating objects of sensors with the earlier created objects
+			UltrasonicDistance ultrasonic = new UltrasonicDistance(move, stopper);
+			Color color = new Color(move, stopper);
 			
 			System.out.println("Press a key to start");
 			keys.waitForAnyPress();
 				
 			
 			//THREADING CODE ULTRASONICSENSOR
-			Thread ultrasens = new Thread(new UltrasonicDistance());
-			ultrasens.start();			
-			
+			Thread ultrasens = new Thread(ultrasonic);			
 			//THREADING CODE COLOR
-			Thread colorthread = new Thread(new Color());
-			colorthread.start();
-	    
+			Thread colorthread = new Thread(color);
 			//THREADING CODE MOVEMENT			
 			Thread motors = new Thread(new MovementStatic());
-			motors.start();		
-			
-		
+			motors.start();
+			ultrasens.start();
+			colorthread.start();
 			}
 	}
 
