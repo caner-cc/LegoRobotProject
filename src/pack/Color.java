@@ -10,11 +10,9 @@ import lejos.utility.Delay;
 public class Color implements Runnable {
 	
 	//Initializing movement & stoppingfactor for constructor
-	Movement move;
 	StoppingFactor stopper;
 	
-	public Color(Movement m, StoppingFactor s) {
-		move = m;
+	public Color(StoppingFactor s) {
 		stopper = s;
 	}
 	

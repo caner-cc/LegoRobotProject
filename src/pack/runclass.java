@@ -35,12 +35,13 @@ public class runclass {
 			Audio audio = ev3.getAudio();
 			
 			//Creating required objects for constructors
-			Movement move = new Movement();
+			//Movement move = new Movement();
 			StoppingFactor stopper = new StoppingFactor();
 			
 			//Creating objects of sensors with the earlier created objects
-			UltrasonicDistance ultrasonic = new UltrasonicDistance(move, stopper);
-			Color color = new Color(move, stopper);
+			UltrasonicDistance ultrasonic = new UltrasonicDistance(stopper);
+			Color color = new Color(stopper);
+			Movement move = new Movement(stopper);
 			
 			System.out.println("Press a key to start");
 			keys.waitForAnyPress();
@@ -51,7 +52,8 @@ public class runclass {
 			//THREADING CODE COLOR
 			Thread colorthread = new Thread(color);
 			//THREADING CODE MOVEMENT			
-			Thread motors = new Thread(new MovementStatic());
+			//Thread motors = new Thread(new MovementStatic());
+			Thread motors = new Thread(move);
 			motors.start();
 			ultrasens.start();
 			colorthread.start();

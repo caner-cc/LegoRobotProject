@@ -3,8 +3,19 @@ package pack;
 import lejos.hardware.motor.Motor;
 import lejos.utility.Delay;
 
-public class Movement {
+public class Movement extends UltrasonicDistance implements Runnable {
 	
+	StoppingFactor stop;
+	UltrasonicDistance us;
+	
+	
+	public Movement(StoppingFactor s) {
+		stop = s;
+	}
+	
+	public Movement() {
+		
+	}
 	
 	//Stop method 
 	public void Stop() {		
@@ -17,12 +28,12 @@ public class Movement {
 	//Forward method. You can determine the speed of the robot with the parameter.
 		
 	//Overloading the forward method if we need delay on it
-	public void Forward(int speed, int delay) {
+	public void Forward(int speed) {
 		Motor.B.setSpeed(speed);
 		Motor.C.setSpeed(speed);
 		Motor.B.forward();
 		Motor.C.forward();
-		Delay.msDelay(delay);
+		
 	}
 	//Turning method. Turns 90 degrees to the right. 
 	public void TurnL() {
@@ -39,8 +50,7 @@ public class Movement {
 		Motor.C.setSpeed(0);
 		Motor.C.stop();
 		Motor.B.forward();
-		Delay.msDelay(1650);
-		Motor.B.stop();
+		
 	}
 	
 	//Turning method. Turns 90 degrees to the left, but backwards
@@ -104,5 +114,24 @@ public class Movement {
 		Motor.B.stop();
 		Motor.C.stop();
 	}
+	
+	public void run() {
+		
+		while(!stopper.stop) {			
+		//If the float is above 1, which will never happen. Back up. (this is put in to avoid the program from doing the wrong thing when the sensor detects nothing.)
+			Forward(200);
+			if (us.measure() >= 1.0) {
+			Stop();
+			Reverse();
+			TurnL();
+		//If the distance is below this value then back up. Basically if it's too close to the wall.
+		}else if (us.measure() <= 0.070) {
+			Reverse();
+			Stop();
+		}else if (us.measure() >= 0.071 & us.measure() <= 0.13) {
+				TurnL();
+	}
+	}
 
+}
 }
