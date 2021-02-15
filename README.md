@@ -1,4 +1,4 @@
-# ultratesties
+# Lego Robot Project
  
 All that needs to be done with the code is making the 3 threads work together.
 Right now both scanners work and execute code conitinously because they are in a loop. Putting the movement thread in a loop causes it to loop infinitely over the other 2 threads. 
